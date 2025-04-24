@@ -129,7 +129,7 @@
       height: 100%;
       width: 0%;
       background-color: #3aa655;
-      transition: width 2s ease;
+      transition: width 0.8s ease;
     }
 
     footer {
@@ -139,6 +139,11 @@
       font-size: 14px;
       color: #aaa;
       z-index: 2;
+    }
+
+    #progressMessage {
+      margin-top: 10px;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -180,21 +185,42 @@
       const progressFill = document.getElementById("progressFill");
       const version = document.getElementById("versionSelect").value;
 
-      // Show and animate progress bar
+      // Show progress bar
       progressBar.style.display = "block";
       progressFill.style.width = "0%";
+
+      // Create and insert message
+      let message = document.createElement("p");
+      message.id = "progressMessage";
+      message.innerText = "Verifying Assets...";
+      document.querySelector(".content").appendChild(message);
+
+      // Stage 1: Verifying Assets
       setTimeout(() => {
-        progressFill.style.width = "100%";
+        progressFill.style.width = "33%";
       }, 100);
 
-      // Wait for animation then redirect
+      // Stage 2: Checking RAM
       setTimeout(() => {
+        message.innerText = "Checking RAM...";
+        progressFill.style.width = "66%";
+      }, 1000);
+
+      // Stage 3: Launching Minecraft
+      setTimeout(() => {
+        message.innerText = "Launching Minecraft...";
+        progressFill.style.width = "100%";
+      }, 1900);
+
+      // Finish and redirect
+      setTimeout(() => {
+        message.remove();
         window.location.href = version;
-      }, 2200);
+      }, 2900);
     }
   </script>
 
-  <!-- Particle.js CDN -->
+  <!-- Particle.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS("particles-js", {
