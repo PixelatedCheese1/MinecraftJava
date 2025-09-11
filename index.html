@@ -185,11 +185,37 @@
   <div id="particles-js"></div>
 
   <!-- 🔹 Banner -->
-  <div class="banner" id="banner">
-    Check out 
-    <a href="/versions/custom/starlike.html">Starlike Client!</a> It's 1.19 Minecraft and more! 
-    <button class="close-btn" onclick="closeBanner()">✖</button>
-  </div>
+<div class="banner" id="banner">
+  Loading banner...
+  <button class="close-btn" onclick="closeBanner()">✖</button>
+</div>
+
+<script>
+  // 🔹 Load Banner HTML dynamically
+  fetch('/banner/current')
+    .then(response => {
+      if (!response.ok) throw new Error("Banner not found");
+      return response.text();
+    })
+    .then(html => {
+      const banner = document.getElementById("banner");
+      // Keep the close button
+      const closeBtn = banner.querySelector('.close-btn');
+      banner.innerHTML = html;
+      banner.appendChild(closeBtn);
+    })
+    .catch(err => {
+      console.error("Error loading banner:", err);
+      document.getElementById("banner").innerText = "No banner available.";
+    });
+
+  function closeBanner() {
+    const banner = document.getElementById("banner");
+    const main = document.getElementById("mainContent");
+    banner.style.display = "none";
+    main.style.height = "calc(100% - 72px)";
+  }
+</script>
 
   <header>Minecraft Launcher</header>
 
