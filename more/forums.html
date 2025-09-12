@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Full Page Embed</title>
+  <style>
+    /* Reset + full-viewport layout */
+    html,body {
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:#f6f7fb;
+      color:#111;
+    }
+
+    /* Container holds header (optional) + embed */
+    .app {
+      display:flex;
+      flex-direction:column;
+      height:100vh; /* full viewport */
+      min-height:100%;
+    }
+
+    header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      padding:0.5rem 1rem;
+      background:#fff;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 1px 0 rgba(0,0,0,0.02);
+      z-index:10;
+    }
+    header h1 {
+      font-size:1rem;
+      margin:0;
+      font-weight:600;
+    }
+    header .controls { display:flex; gap:.5rem; align-items:center; }
+
+    /* The embed area grows to fill remaining space */
+    .embed-wrap {
+      position:relative;
+      flex:1 1 auto;
+      min-height:0; /* allows flex children to shrink properly */
+      background:linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+    }
+
+    /* Full-viewport iframe (or embed/object) */
+    iframe.embed,
+    object.embed,
+    embed.embed {
+      position:absolute;
+      inset:0; /* top:0; right:0; bottom:0; left:0; */
+      width:100%;
+      height:100%;
+      border:0;
+      background:transparent;
+    }
+
+    /* small helpful fallback */
+    .fallback {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      padding:1rem;
+      text-align:center;
+    }
+
+    button {
+      appearance:none;
+      border:1px solid rgba(0,0,0,.08);
+      background:white;
+      padding:.4rem .6rem;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:.9rem;
+    }
+    button:active { transform:translateY(1px); }
+    .muted { color: #666; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Minecraft Fourms</h1>
+      <div class="controls">
+        <span class="muted" id="status">Ready</span>
+        <button id="openFullscreen" title="Open embed in fullscreen">⤢ Fullscreen</button>
+        <a id="openNew" href="#" target="_blank" rel="noopener noreferrer">
+          <button title="Open in new tab">↗ Open</button>
+        </a>
+      </div>
+    </header>
+
+    <main class="embed-wrap" id="wrap">
+      <!--
+        Replace src below with the URL you want to embed.
+        Options:
+          - iframe (external pages)
+          - object/embed (PDFs)
+        Important security notes below.
+      -->
+      <iframe
+        id="embedFrame"
+        class="embed"
+        src="https://www.minecraftforum.net/"
+        title="Embedded page"
+        loading="lazy"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+        allowfullscreen
+      ></iframe>
+
+      <!-- Fallback for very old browsers or if iframe blocked -->
+      <div class="fallback" aria-hidden="true" id="fallback" style="display:none;">
+        <div>
+          <p>Unable to show embedded content. <a id="fallback-link" href="https://example.com" target="_blank" rel="noopener noreferrer">Open in a new tab</a>.</p>
+          <p class="muted">If you own the embedded site, consider enabling embedding (e.g., set X-Frame-Options or Content-Security-Policy appropriately).</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const frame = document.getElementById('embedFrame');
+    const openNew = document.getElementById('openNew');
+    const status = document.getElementById('status');
+    const fallback = document.getElementById('fallback');
+    const fallbackLink = document.getElementById('fallback-link');
+    const fullBtn = document.getElementById('openFullscreen');
+
+    // keep "Open" link in sync with iframe src
+    function syncLinks() {
+      const src = frame.getAttribute('src') || '';
+      openNew.href = src;
+      fallbackLink.href = src;
+    }
+    syncLinks();
+
+    // Basic load/error handling
+    frame.addEventListener('load', () => {
+      status.textContent = 'Loaded';
+      // some sites block embedding (X-Frame-Options/CSP) — detect by trying to access frame's document
+      try {
+        // Accessing contentDocument may throw if cross-origin or blocked
+        const doc = frame.contentDocument;
+        // If doc is null or empty (and origin differs), assume fine — keep Loaded
+      } catch (e) {
+        // Cross-origin access denied (normal for many external pages) — still OK.
+      }
+    });
+
+    // If the iframe is blocked entirely (some browsers don't fire error reliably),
+    // show fallback after a timeout
+    const fallbackTimeout = setTimeout(() => {
+      // check if iframe has a computed height of 0 (a heuristic)
+      const rect = frame.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) {
+        showFallback();
+      }
+    }, 1500);
+
+    // Show fallback UI
+    function showFallback() {
+      frame.style.display = 'none';
+      fallback.style.display = 'flex';
+      status.textContent = 'Fallback shown';
+    }
+
+    // Fullscreen helper
+    fullBtn.addEventListener('click', async () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        return;
+      }
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch (err) {
+        console.warn('Fullscreen failed', err);
+      }
+    });
+
+    // Optional: message receiver — allow child to request resize (postMessage)
+    window.addEventListener('message', (ev) => {
+      // simple origin check — OPTIONAL: replace with your embed's origin
+      // if (ev.origin !== 'https://your-trusted-origin.com') return;
+      if (!ev.data) return;
+      if (ev.data.type === 'setHeight' && typeof ev.data.height === 'number') {
+        const h = Math.max(ev.data.height, 200);
+        frame.style.height = h + 'px';
+      }
+      if (ev.data.type === 'navigate' && typeof ev.data.url === 'string') {
+        // Example: child can tell parent to open URL in new tab
+        window.open(ev.data.url, '_blank', 'noopener');
+      }
+    }, false);
+  </script>
+</body>
+</html>
