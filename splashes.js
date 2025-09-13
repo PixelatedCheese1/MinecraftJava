@@ -12,19 +12,20 @@ const splashes = [
   "Pixelated Cheese!"
 ];
 
-function showRandomSplash(elementId) {
+function showSplash(elementId) {
   const splash = document.getElementById(elementId);
   if (!splash) return;
 
   // Pick a random splash
-  const text = splashes[Math.floor(Math.random() * splashes.length)];
-  splash.innerText = text;
+  splash.innerText = splashes[Math.floor(Math.random() * splashes.length)];
 
-  // Random rotation like Minecraft style
-  const angle = (Math.random() * 20) - 10; // -10deg to 10deg
-  splash.style.transform = `rotate(${angle}deg)`;
+  // Fixed tilt like Minecraft
+  splash.style.transform = "rotate(-20deg)";
+
+  // Add bouncy effect
+  splash.classList.add("bouncy");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  showRandomSplash("splashText");
+  showSplash("splashText");
 });
