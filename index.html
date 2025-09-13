@@ -229,12 +229,41 @@
 
       progressBar.style.display = "block";
       progressFill.style.width = "0%";
-      message.innerText = "Verifying assets...";
+      message.innerText = "";
 
-      setTimeout(() => { progressFill.style.width = "35%"; }, 300);
-      setTimeout(() => { message.innerText = "Checking RAM..."; progressFill.style.width = "70%"; }, 1000);
-      setTimeout(() => { message.innerText = "Launching Minecraft..."; progressFill.style.width = "100%"; }, 1800);
-      setTimeout(() => { message.innerText = ""; window.location.href = version; }, 2800);
+      // Define tasks
+      const tasks = [
+        { name: "Verifying assets...", progress: 25 },
+        { name: "Checking RAM...", progress: 50 },
+        { name: "Loading libraries...", progress: 75 },
+        { name: "Launching Minecraft...", progress: 100 }
+      ];
+
+      // Random duration between 0.5s and 2s
+      function randomDuration() {
+        return 500 + Math.random() * 1500;
+      }
+
+      let currentTask = 0;
+
+      function runNextTask() {
+        if (currentTask >= tasks.length) {
+          message.innerText = "";
+          window.location.href = version;
+          return;
+        }
+
+        const task = tasks[currentTask];
+        message.innerText = task.name;
+
+        setTimeout(() => {
+          progressFill.style.width = task.progress + "%";
+          currentTask++;
+          runNextTask();
+        }, randomDuration());
+      }
+
+      runNextTask();
     }
   </script>
 
