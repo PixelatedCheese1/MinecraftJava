@@ -28,10 +28,35 @@
       width: 100vw;
       font-family: 'Minecraft', monospace;
       background: #1c1c1c url('/assets/tile_dirt.png') repeat;
-      background-size: 64px 64px; /* makes it tile like Minecraft dirt */
+      background-size: 64px 64px;
       color: #e0e0e0;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 🔹 Shimmer Overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0) 200px,
+        rgba(0, 0, 0, 0.1) 400px
+      );
+      animation: shimmer 12s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes shimmer {
+      from { transform: translateX(0) translateY(0); }
+      to   { transform: translateX(-400px) translateY(-400px); }
     }
 
     /* 🔹 Top bar */
@@ -46,6 +71,8 @@
       color: #a5ffa5;
       letter-spacing: 2px;
       text-shadow: 2px 2px #000;
+      z-index: 2;
+      position: relative;
     }
 
     /* 🔹 Layout */
@@ -53,6 +80,8 @@
       flex: 1;
       display: flex;
       flex-direction: row;
+      z-index: 2;
+      position: relative;
     }
 
     .sidebar {
@@ -168,6 +197,8 @@
       padding: 8px;
       font-size: 14px;
       color: #bbb;
+      z-index: 2;
+      position: relative;
     }
   </style>
 </head>
