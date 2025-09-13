@@ -12,7 +12,7 @@
       padding: 0;
     }
 
-    /* 🔹 Custom Fonts */
+    /* 🔹 Fonts */
     @font-face {
       font-family: 'MinecraftBold';
       src: url('/assets/Minecraft-Bold.otf') format('opentype');
@@ -23,199 +23,158 @@
       src: url('/assets/Minecraft.otf') format('opentype');
     }
 
-    html, body {
-      height: 100%;
-      font-family: 'Minecraft', sans-serif;
-      background-color: #1c1c1c;
-      color: white;
-      overflow: hidden;
+    body {
+      height: 100vh;
+      width: 100vw;
+      font-family: 'Minecraft', monospace;
+      background: #1c1c1c url('/assets/dirt_bg.png');
+      background-size: 64px;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* 🔹 Background Image */
-    #particles-js {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      z-index: 0;
-      background-image: url('/assets/banner.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: brightness(0.6);
-    }
-
-    /* 🔹 Banner Styling */
-    .banner {
-      background: linear-gradient(90deg, #3aa655, #2d7a43);
-      color: white;
-      text-align: center;
-      padding: 10px 40px 10px 10px;
-      font-size: 18px;
-      font-weight: 600;
-      border-bottom: 2px solid #3f3f3f;
-      position: relative;
-      z-index: 3;
-      font-family: 'MinecraftBold', sans-serif;
-    }
-
-    .banner a {
-      color: #fff;
-      text-decoration: underline;
-    }
-
-    .banner .close-btn {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 20px;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
+    /* 🔹 Top bar */
     header {
-      background-color: #2d2d2d;
-      width: 100%;
-      padding: 20px;
+      background: #202020;
+      border-bottom: 4px solid #2e7d32;
+      padding: 12px;
       text-align: center;
       font-size: 28px;
       font-weight: bold;
-      border-bottom: 2px solid #3f3f3f;
-      position: relative;
-      z-index: 2;
-      font-family: 'MinecraftBold', sans-serif;
+      font-family: 'MinecraftBold', monospace;
+      color: #a5ffa5;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px #000;
     }
 
+    /* 🔹 Layout */
     .main {
+      flex: 1;
       display: flex;
-      height: calc(100% - 112px); /* banner + header */
-      z-index: 2;
-      position: relative;
-      transition: height 0.3s ease;
+      flex-direction: row;
     }
 
     .sidebar {
-      background-color: #2a2a2a;
-      width: 200px;
-      padding: 30px 10px;
-      border-right: 2px solid #3f3f3f;
+      background: #2b2b2b;
+      border-right: 4px solid #2e7d32;
+      width: 220px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      z-index: 2;
+      gap: 12px;
     }
 
     .sidebar a {
-      color: white;
       text-decoration: none;
-      background: #3a3f47;
-      padding: 10px 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      width: 160px;
+      color: #fff;
+      background: #3c3c3c;
+      border: 2px solid #555;
+      padding: 10px;
       text-align: center;
-      transition: background 0.3s;
-      font-family: 'Minecraft', sans-serif;
+      font-size: 16px;
+      transition: all 0.2s;
     }
 
     .sidebar a:hover {
-      background: #50555c;
+      background: #2e7d32;
+      border-color: #1b5e20;
     }
 
     .content {
       flex: 1;
+      background: rgba(0,0,0,0.65);
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      position: relative;
-      z-index: 2;
-      font-family: 'Minecraft', sans-serif;
+      align-items: center;
+      padding: 20px;
     }
 
+    /* 🔹 Version select */
     label {
       font-size: 18px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      color: #c8ffc8;
+      text-shadow: 1px 1px #000;
     }
 
     select {
       font-size: 16px;
-      padding: 10px;
-      width: 250px;
-      border: none;
-      border-radius: 6px;
-      background: #3a3f47;
+      padding: 12px;
+      width: 260px;
+      border: 2px solid #555;
+      border-radius: 4px;
+      background: #2b2b2b;
       color: white;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      font-family: 'Minecraft', monospace;
     }
 
+    select option {
+      background: #2b2b2b;
+      color: #fff;
+    }
+
+    /* 🔹 Play button */
     .play-button {
-      background-color: #3aa655;
-      border: none;
-      padding: 15px 50px;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+      background: #2e7d32;
+      border: 4px solid #1b5e20;
+      padding: 16px 60px;
+      font-size: 22px;
       font-weight: bold;
-      font-family: 'MinecraftBold', sans-serif;
+      cursor: pointer;
+      text-transform: uppercase;
+      color: #fff;
+      font-family: 'MinecraftBold', monospace;
+      text-shadow: 2px 2px #000;
+      transition: transform 0.15s, background 0.2s;
     }
 
     .play-button:hover {
-      background-color: #32904a;
+      background: #43a047;
+      transform: scale(1.05);
     }
 
+    /* 🔹 Progress bar */
     .progress-bar {
       width: 300px;
       height: 20px;
-      background-color: #444;
-      border-radius: 10px;
+      background: #111;
+      border: 2px solid #555;
       margin-top: 20px;
-      overflow: hidden;
       display: none;
     }
 
     .progress {
       height: 100%;
       width: 0%;
-      background-color: #3aa655;
-      transition: width 0.8s ease;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 10px;
-      left: 220px;
-      font-size: 14px;
-      color: #aaa;
-      z-index: 2;
-      font-family: 'Minecraft', sans-serif;
+      background: linear-gradient(90deg, #2e7d32, #66bb6a);
+      transition: width 0.5s;
     }
 
     #progressMessage {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 16px;
+      color: #c8ffc8;
+      text-shadow: 1px 1px #000;
+    }
+
+    /* 🔹 Footer */
+    footer {
+      background: #202020;
+      border-top: 4px solid #2e7d32;
+      text-align: center;
+      padding: 8px;
+      font-size: 14px;
+      color: #bbb;
     }
   </style>
 </head>
 <body>
-
-  <div id="particles-js"></div>
-
-  <!-- 🔹 Banner -->
-  <div class="banner" id="banner" role="banner">
-    Loading banner...
-    <button class="close-btn" onclick="closeBanner()" aria-label="Close banner">✖</button>
-  </div>
-
   <header>Minecraft Launcher</header>
 
-  <div class="main" id="mainContent">
+  <div class="main">
     <div class="sidebar">
       <a href="help">Help Pages</a>
       <a href="https://pixelatedcheese1.vercel.app/projects/minecraftjava.html">About Project</a>
@@ -235,84 +194,49 @@
         <option value="/versions/indev.html">Indev</option>
         <option value="/versions/custom">Other Clients</option>
       </select>
+
       <button class="play-button" onclick="launchGame()">Play</button>
 
       <div class="progress-bar" id="progressBar">
         <div class="progress" id="progressFill"></div>
       </div>
+
+      <p id="progressMessage"></p>
     </div>
   </div>
 
   <footer>Made with ❤️ by PixelatedCheese1</footer>
 
   <script>
-    // 🔹 Load Banner HTML dynamically
-    fetch('/banner/current')
-      .then(response => {
-        if (!response.ok) throw new Error("Banner not found");
-        return response.text();
-      })
-      .then(html => {
-        const banner = document.getElementById("banner");
-        const closeBtn = banner.querySelector('.close-btn');
-        banner.innerHTML = html;
-        banner.appendChild(closeBtn);
-      })
-      .catch(err => {
-        console.error("Error loading banner:", err);
-        document.getElementById("banner").innerText = "No banner available.";
-      });
-
-    function closeBanner() {
-      const banner = document.getElementById("banner");
-      const main = document.getElementById("mainContent");
-      banner.style.display = "none";
-      main.style.height = "calc(100% - 72px)"; // adjust height after banner removed
-    }
-
     function launchGame() {
       const progressBar = document.getElementById("progressBar");
       const progressFill = document.getElementById("progressFill");
+      const message = document.getElementById("progressMessage");
       const version = document.getElementById("versionSelect").value;
 
-      // Remove old message if exists
-      let oldMessage = document.getElementById("progressMessage");
-      if (oldMessage) oldMessage.remove();
-
-      // Show progress bar
       progressBar.style.display = "block";
       progressFill.style.width = "0%";
+      message.innerText = "Verifying assets...";
 
-      // Create and insert message
-      let message = document.createElement("p");
-      message.id = "progressMessage";
-      message.innerText = "Verifying Assets...";
-      document.querySelector(".content").appendChild(message);
-
-      // Stage 1: Verifying Assets
       setTimeout(() => {
-        progressFill.style.width = "33%";
-      }, 100);
+        progressFill.style.width = "35%";
+      }, 300);
 
-      // Stage 2: Checking RAM
       setTimeout(() => {
         message.innerText = "Checking RAM...";
-        progressFill.style.width = "66%";
+        progressFill.style.width = "70%";
       }, 1000);
 
-      // Stage 3: Launching Minecraft
       setTimeout(() => {
         message.innerText = "Launching Minecraft...";
         progressFill.style.width = "100%";
-      }, 1900);
+      }, 1800);
 
-      // Finish and redirect
       setTimeout(() => {
-        message.remove();
+        message.innerText = "";
         window.location.href = version;
-      }, 2900);
+      }, 2800);
     }
   </script>
-
 </body>
 </html>
