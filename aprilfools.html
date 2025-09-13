@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/x-icon" href="logo.svg">
+  <title>Minecraft Launcher</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 🔹 Fonts */
+    @font-face {
+      font-family: 'MinecraftBold';
+      src: url('/assets/Minecraft-Bold.otf') format('opentype');
+    }
+
+    @font-face {
+      font-family: 'Minecraft';
+      src: url('/assets/Minecraft.otf') format('opentype');
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      font-family: 'Minecraft', monospace;
+      background: #1c1c1c url('/assets/aprilfoolsbackground.avif') repeat;
+      background-size: 64px 64px;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 🔹 Header with Logo */
+    header {
+      background: #202020;
+      border-bottom: 4px solid #2e7d32;
+      padding: 12px;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    #launcherLogo {
+      max-height: 60px; /* adjust as needed */
+      width: auto;
+      display: inline-block;
+    }
+
+    /* 🔹 Layout */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+    }
+
+    .sidebar {
+      background: #2b2b2b;
+      border-right: 4px solid #2e7d32;
+      width: 220px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #fff;
+      background: #3c3c3c;
+      border: 2px solid #555;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    .sidebar a:hover {
+      background: #2e7d32;
+      border-color: #1b5e20;
+    }
+
+    .block-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+
+    .content {
+      flex: 1;
+      background: rgba(0,0,0,0.65);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* 🔹 Version select */
+    label {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #c8ffc8;
+      text-shadow: 1px 1px #000;
+    }
+
+    select {
+      font-size: 16px;
+      padding: 12px;
+      width: 260px;
+      border: 2px solid #555;
+      border-radius: 4px;
+      background: #2b2b2b;
+      color: white;
+      margin-bottom: 25px;
+      font-family: 'Minecraft', monospace;
+    }
+
+    select option {
+      background: #2b2b2b;
+      color: #fff;
+    }
+
+    /* 🔹 Play button */
+    .play-button {
+      background: #2e7d32;
+      border: 4px solid #1b5e20;
+      padding: 16px 60px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      color: #fff;
+      font-family: 'MinecraftBold', monospace;
+      text-shadow: 2px 2px #000;
+    }
+
+    .play-button:hover {
+      background: #43a047;
+    }
+
+    /* 🔹 Progress bar */
+    .progress-bar {
+      width: 300px;
+      height: 20px;
+      background: #111;
+      border: 2px solid #555;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2e7d32, #66bb6a);
+      transition: width 0.5s;
+    }
+
+    #progressMessage {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #c8ffc8;
+      text-shadow: 1px 1px #000;
+    }
+
+    /* 🔹 Footer */
+    footer {
+      background: #202020;
+      border-top: 4px solid #2e7d32;
+      text-align: center;
+      padding: 8px;
+      font-size: 14px;
+      color: #bbb;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="/assets/aprilfoolslogo.png" alt="Minecraft Launcher Logo" id="launcherLogo">
+  </header>
+
+  <div class="main">
+    <div class="sidebar">
+      <a href="help"><img src="/assets/Book.webp" class="block-icon" alt=""> MineWay Pages</a>
+      <a href="updates.html"><img src="/assets/Crystal.webp" class="block-icon" alt=""> Update Bogged</a>
+      <a href="https://www.minecraftforum.net/"><img src="/assets/bookquil.webp" class="block-icon" alt=""> MineWay Forums</a>
+      <a href="https://minecraft.wiki"><img src="/assets/world.webp" class="block-icon" alt=""> MineWay Wiki</a>
+    </div>
+
+    <div class="content">
+      <label for="versionSelect">Choose MineWay Version:</label>
+      <select id="versionSelect">
+        <option value="/versions/1_12_2.html">Vanilla 1.12</option>
+        <option value="/versions/1_8.html">Vanilla 1.8</option>
+        <option value="/versions/1_5_2.html">Vanilla 1.5.2</option>
+        <option value="/versions/1_3.html">Vanilla 1.3</option>
+        <option value="/versions/beta/1_7_3.html">Beta 1.7.3</option>
+        <option value="/versions/indev.html">Indev</option>
+        <option value="/versions/custom">Other Sandwitches</option>
+      </select>
+
+      <button class="play-button" onclick="launchGame()">Order</button>
+
+      <div class="progress-bar" id="progressBar">
+        <div class="progress" id="progressFill"></div>
+      </div>
+
+      <p id="progressMessage"></p>
+    </div>
+  </div>
+
+  <footer></footer>
+
+  <script>
+    function launchGame() {
+      const progressBar = document.getElementById("progressBar");
+      const progressFill = document.getElementById("progressFill");
+      const message = document.getElementById("progressMessage");
+      const version = document.getElementById("versionSelect").value;
+
+      progressBar.style.display = "block";
+      progressFill.style.width = "0%";
+      message.innerText = "";
+
+      // Define tasks
+      const tasks = [
+        { name: "Hiring Employees...", progress: 25 },
+        { name: "Making Sandwitches...", progress: 50 },
+        { name: "Loading Customers...", progress: 75 },
+        { name: "Launching Flavor...", progress: 100 }
+      ];
+
+      // Random duration between 0.5s and 2s
+      function randomDuration() {
+        return 500 + Math.random() * 2000;
+      }
+
+      let currentTask = 0;
+
+      function runNextTask() {
+        if (currentTask >= tasks.length) {
+          message.innerText = "";
+          window.location.href = version;
+          return;
+        }
+
+        const task = tasks[currentTask];
+        message.innerText = task.name;
+
+        setTimeout(() => {
+          progressFill.style.width = task.progress + "%";
+          currentTask++;
+          runNextTask();
+        }, randomDuration());
+      }
+
+      runNextTask();
+    }
+  </script>
+
+</body>
+</html>
