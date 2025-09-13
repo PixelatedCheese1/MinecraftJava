@@ -36,27 +36,26 @@
       overflow: hidden;
     }
 
-    /* 🔹 Shimmer Overlay */
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 200%;
-      height: 200%;
-      background: repeating-linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0.05) 0px,
-        rgba(255, 255, 255, 0) 200px,
-        rgba(0, 0, 0, 0.1) 400px
-      );
-      animation: shimmer 12s linear infinite;
-      pointer-events: none;
-      z-index: 0;
+    /* 🔹 Splash Text */
+    #splashText {
+      text-align: center;
+      font-family: 'MinecraftBold', monospace;
+      font-size: 24px;
+      color: #ffff55;
+      text-shadow: 2px 2px #000;
+      margin: 10px 0 0 0;
+      transform: rotate(-20deg);
     }
 
-    @keyframes shimmer {
-      from { transform: translateX(0) translateY(0); }
-      to   { transform: translateX(-400px) translateY(-400px); }
+    @keyframes bounce {
+      0%   { transform: translateY(-20px) rotate(-20deg); }
+      50%  { transform: translateY(5px) rotate(-20deg); }
+      70%  { transform: translateY(-5px) rotate(-20deg); }
+      100% { transform: translateY(0) rotate(-20deg); }
+    }
+
+    .bouncy {
+      animation: bounce 1s ease-out;
     }
 
     /* 🔹 Top bar */
@@ -203,20 +202,11 @@
   </style>
 </head>
 <body>
- <p id="splashText" style="
-    text-align: center; 
-    font-family: 'MinecraftBold', monospace; 
-    font-size: 24px; 
-    color: #ffff55; 
-    text-shadow: 2px 2px #000;
-    margin-top: 8px;
-    transition: transform 0.5s ease;
-"></p>
 
-<header>Minecraft Launcher</header>
+  <!-- 🔹 Splash Text -->
+  <p id="splashText"></p>
 
-<script src="/assets/splashes.js"></script>
-
+  <header>Minecraft Launcher</header>
 
   <div class="main">
     <div class="sidebar">
@@ -252,6 +242,32 @@
   <footer>Made with ❤️ by PixelatedCheese1</footer>
 
   <script>
+    // 🔹 Splash logic
+    const splashes = [
+      "Hello World!",
+      "Punching Trees!",
+      "Mining Madness!",
+      "Creeper Party!",
+      "Blocky Fun!",
+      "Redstone Ready!",
+      "Diamond Dreams!",
+      "Nether Awaits",
+      "Enderman Stare",
+      "Pixelated Cheese!"
+    ];
+
+    function showSplash() {
+      const splash = document.getElementById("splashText");
+      if (!splash) return;
+
+      splash.innerText = splashes[Math.floor(Math.random() * splashes.length)];
+      splash.style.transform = "rotate(-20deg)";
+      splash.classList.add("bouncy");
+    }
+
+    document.addEventListener("DOMContentLoaded", showSplash);
+
+    // 🔹 Launcher logic
     function launchGame() {
       const progressBar = document.getElementById("progressBar");
       const progressFill = document.getElementById("progressFill");
@@ -262,25 +278,12 @@
       progressFill.style.width = "0%";
       message.innerText = "Verifying assets...";
 
-      setTimeout(() => {
-        progressFill.style.width = "35%";
-      }, 300);
-
-      setTimeout(() => {
-        message.innerText = "Checking RAM...";
-        progressFill.style.width = "70%";
-      }, 1000);
-
-      setTimeout(() => {
-        message.innerText = "Launching Minecraft...";
-        progressFill.style.width = "100%";
-      }, 1800);
-
-      setTimeout(() => {
-        message.innerText = "";
-        window.location.href = version;
-      }, 2800);
+      setTimeout(() => { progressFill.style.width = "35%"; }, 300);
+      setTimeout(() => { message.innerText = "Checking RAM..."; progressFill.style.width = "70%"; }, 1000);
+      setTimeout(() => { message.innerText = "Launching Minecraft..."; progressFill.style.width = "100%"; }, 1800);
+      setTimeout(() => { message.innerText = ""; window.location.href = version; }, 2800);
     }
   </script>
+
 </body>
 </html>
