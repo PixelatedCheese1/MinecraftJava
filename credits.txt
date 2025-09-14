@@ -6,3 +6,4 @@ Please don't take this websites code and host it somewhere else.
 Hosted Websites:
 minecraftjava.pages.dev
 minecraft-java.vercel.app
+iamplacinblocksnstuff.netlify.app
