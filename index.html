@@ -67,7 +67,7 @@
       50% { transform: scale(1.2); }
     }
     #splashText {
-      font-family: 'MinecraftBold', monospace;
+      font-family: 'Minecraft', monospace;
       font-size: 24px;
       color: #ffd700;
       text-shadow: 2px 2px #000;
@@ -141,7 +141,7 @@
     </div>
 
     <div class="content">
-      <div id="splashText">Loading...</div>
+      <div id="splashText"></div>
 
       <label for="versionSelect">Choose Minecraft Version:</label>
       <select id="versionSelect">
@@ -152,10 +152,11 @@
         <option value="/versions/1_3.html">Vanilla 1.3</option>
         <option value="/versions/beta/1_7_3.html">Beta 1.7.3</option>
         <option value="/versions/indev.html">Indev</option>
+        <option value="minecraft://">Open Minecraft Bedrock (Must have Bedorck installed)</option>
         <option value="/versions/custom">Other Clients</option>
       </select>
 
-      <button class="play-button" onclick="launchGame()">Play</button>
+      <button class="play-button" id="playBtn">Play</button>
 
       <div class="progress-bar" id="progressBar">
         <div class="progress" id="progressFill"></div>
@@ -165,27 +166,27 @@
     </div>
   </div>
 
-  <footer>Minecraft Launcher © 2025 | Made by Wes</footer>
+  <footer>Not affiated by Mojang or Microsoft</footer>
 
-  <audio id="clickSound" src="/assets/click.mp3"></audio>
+  <audio id="clickSound" src="/assets/click.mp3" preload="auto"></audio>
 
   <script>
-    // 🔹 Load splash messages from JSON
+    // 🔹 Load splash messages
     const splashText = document.getElementById('splashText');
     fetch('/assets/splashMessages.json')
       .then(res => res.json())
       .then(messages => {
         splashText.innerText = messages[Math.floor(Math.random() * messages.length)];
       })
-      .catch(err => {
-        splashText.innerText = "Welcome to the Launcher!";
-        console.error("Failed to load splash messages:", err);
-      });
+      .catch(() => splashText.innerText = "Welcome to the Launcher!");
 
-    // 🔹 Click sounds
+    // 🔹 Play button sound
     const clickSound = document.getElementById('clickSound');
-    document.querySelector('.play-button').addEventListener('click', () => clickSound.play());
-    document.querySelectorAll('.sidebar a').forEach(link => link.addEventListener('click', () => clickSound.play()));
+    document.getElementById('playBtn').addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+      launchGame();
+    });
 
     // 🔹 Launch game simulation
     function launchGame() {
@@ -205,26 +206,22 @@
         { name: "Launching Minecraft...", progress: 100 }
       ];
 
-      function randomDuration() { return 500 + Math.random() * 2000; }
       let currentTask = 0;
+      function randomDuration() { return 500 + Math.random() * 2000; }
 
       function runNextTask() {
         if (currentTask >= tasks.length) {
-          message.innerText = "";
           window.location.href = version;
           return;
         }
-
         const task = tasks[currentTask];
         message.innerText = task.name;
-
         setTimeout(() => {
           progressFill.style.width = task.progress + "%";
           currentTask++;
           runNextTask();
         }, randomDuration());
       }
-
       runNextTask();
     }
   </script>
