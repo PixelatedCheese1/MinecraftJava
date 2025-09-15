@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Versions Information - MinecraftJava Help Pages</title>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Typography for nice markdown rendering -->
+  <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.9/dist/typography.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 flex flex-col items-center p-6">
+
+  <div class="max-w-3xl w-full bg-white shadow-lg rounded-2xl p-6">
+    <h1 class="text-3xl font-bold mb-4 text-indigo-600">Versions Information</h1>
+    <article id="help-content" class="prose prose-indigo max-w-none">
+      <p class="text-gray-500">Loading help content...</p>
+    </article>
+  </div>
+
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    async function loadMarkdown() {
+      try {
+        const res = await fetch("markdown.md"); // Make sure HELP.md is in the same folder
+        const text = await res.text();
+        document.getElementById("help-content").innerHTML = marked.parse(text);
+      } catch (e) {
+        document.getElementById("help-content").innerHTML =
+          "<p class='text-red-500'>Error loading help file.</p>";
+      }
+    }
+    loadMarkdown();
+  </script>
+</body>
+</html>
