@@ -11,10 +11,49 @@
     <h1 class="text-3xl font-bold text-indigo-600 mb-6">Help Center</h1>
     <p class="mb-4 text-gray-600">Choose a topic below to view detailed help pages:</p>
 
-    <ul class="space-y-3">
+    <!-- Search Bar -->
+    <div class="mb-6">
+      <input 
+        id="searchInput"
+        type="text" 
+        placeholder="Search help articles..." 
+        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    <!-- Help Links -->
+    <ul id="helpList" class="space-y-3">
       <li><a href="/help/articles/how-to-enable-wasm" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium">How to enable WASM</a></li>
-      <li><a href="/help/articles/is-this-legal" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium">Is this legal?</a></li>     
+      <li><a href="/help/articles/is-this-legal" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium">Is this legal?</a></li>
+      <li><a href="/help/articles/brewing" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium">Brewing Guide</a></li>
     </ul>
+
+    <!-- No Results Message -->
+    <p id="noResults" class="hidden mt-4 text-center text-gray-500">No results found.</p>
   </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const helpList = document.getElementById("helpList");
+    const items = helpList.getElementsByTagName("li");
+    const noResults = document.getElementById("noResults");
+
+    searchInput.addEventListener("input", function() {
+      const filter = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      for (let i = 0; i < items.length; i++) {
+        const text = items[i].innerText.toLowerCase();
+        if (text.includes(filter)) {
+          items[i].style.display = "";
+          visibleCount++;
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+
+      noResults.classList.toggle("hidden", visibleCount > 0);
+    });
+  </script>
 </body>
 </html>
