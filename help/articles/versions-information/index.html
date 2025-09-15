@@ -1,37 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Versions Information - MinecraftJava Help Pages</title>
-  <!-- TailwindCSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind Typography for nice markdown rendering -->
-  <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.9/dist/typography.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-50 text-gray-900 flex flex-col items-center p-6">
-
-  <div class="max-w-3xl w-full bg-white shadow-lg rounded-2xl p-6">
-    <h1 class="text-3xl font-bold mb-4 text-indigo-600">Versions Information</h1>
-    <article id="help-content" class="prose prose-indigo max-w-none">
-      <p class="text-gray-500">Loading help content...</p>
-    </article>
-  </div>
-
-  <!-- Marked.js for Markdown rendering -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    async function loadMarkdown() {
-      try {
-        const res = await fetch("markdown.md"); // Make sure HELP.md is in the same folder
-        const text = await res.text();
-        document.getElementById("help-content").innerHTML = marked.parse(text);
-      } catch (e) {
-        document.getElementById("help-content").innerHTML =
-          "<p class='text-red-500'>Error loading help file.</p>";
-      }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minecraft Versions Information</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#93a0b3;
+      --accent:#6ee7b7;
+      --accent-2:#60a5fa;
+      --row:#0d1724;
+      --table-border: rgba(255,255,255,0.06);
+      --glass: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    loadMarkdown();
-  </script>
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: linear-gradient(180deg,#071326 0%, #071022 100%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+      box-sizing:border-box;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    header h1{
+      font-size:20px;
+      margin:0;
+      letter-spacing: -.2px;
+    }
+
+    header p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      border:1px solid var(--table-border);
+      backdrop-filter: blur(6px);
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border-radius:8px;
+      margin-top:12px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:820px; /* keeps layout tidy on desktop, allows horizontal scroll on small screens */
+      font-size:14px;
+    }
+
+    thead tr{
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:0.8px;
+    }
+
+    th, td{
+      text-align:left;
+      padding:12px 14px;
+      border-bottom:1px solid var(--table-border);
+      vertical-align:middle;
+    }
+
+    tbody tr:nth-child(odd){
+      background: rgba(255,255,255,0.01);
+    }
+
+    tbody tr:hover{
+      background: rgba(96,165,250,0.06);
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 8px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:12px;
+      color:#042027;
+    }
+
+    .ok { background: var(--accent); color:#02210f; }
+    .no { background: #f87171; color:#2b0b08; }
+    .unknown { background: rgba(255,255,255,0.06); color:var(--muted); font-weight:600; }
+
+    caption{
+      caption-side:top;
+      text-align:left;
+      font-weight:600;
+      margin-bottom:8px;
+      color:var(--accent-2);
+    }
+
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:760px){
+      :root{ --card: #071022; }
+      header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      table{ min-width:700px; }
+      th, td{ padding:10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Minecraft Versions Information</h1>
+        <p class="small">Quick reference for release dates, features, and platform support</p>
+      </div>
+      <div class="small">Generated: <strong><!-- date JS could go here if you want dynamic date -->Sep 14, 2025</strong></div>
+    </header>
+
+    <section class="card" aria-labelledby="table-heading">
+      <h2 id="table-heading" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Minecraft versions</h2>
+
+      <div class="table-wrap" role="region" aria-label="Minecraft versions table">
+        <table>
+          <caption>Overview of selected Minecraft releases</caption>
+          <thead>
+            <tr>
+              <th scope="col">Version</th>
+              <th scope="col">Release Date</th>
+              <th scope="col">Notable Features</th>
+              <th scope="col">Singleplayer Support</th>
+              <th scope="col">Multiplayer Support</th>
+              <th scope="col">Open To LAN</th>
+              <th scope="col">WASM / JS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1.3</strong></td>
+              <td>August 1, 2012</td>
+              <td>Added trading with villagers, writable books, and Adventure mode</td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge unknown">Unknown</span></td>
+              <td><span class="badge unknown">Unknown</span></td>
+              <td class="small">JS</td>
+            </tr>
+
+            <tr>
+              <td><strong>1.5.2</strong></td>
+              <td>May 2, 2013</td>
+              <td>Bug fixes for Redstone Update (1.5); introduced hoppers and comparators</td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge unknown">Unknown</span></td>
+              <td><span class="badge unknown">Unknown</span></td>
+              <td class="small">JS</td>
+            </tr>
+
+            <tr>
+              <td><strong>1.8</strong></td>
+              <td>September 2, 2014</td>
+              <td>Banners, ocean monuments, rabbits, and major world generation changes</td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge ok">✓</span></td>
+              <td class="small">WASM</td>
+            </tr>
+
+            <tr>
+              <td><strong>1.12</strong></td>
+              <td>June 7, 2017</td>
+              <td>Parrots, advancements system, recipe book, concrete, and terracotta</td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge ok">✓ (Not Many Servers Supported)</span></td>
+              <td><span class="badge unknown">✓ (Buggy)</span></td>
+              <td class="small">WASM</td>
+            </tr>
+
+            <tr>
+              <td><strong>1.14</strong></td>
+              <td>April 23, 2019</td>
+              <td>Villager redesign, Pillagers & raids, bamboo, scaffolding, and campfires</td>
+              <td><span class="badge no">✗</span></td>
+              <td><span class="badge ok">✓</span></td>
+              <td><span class="badge no">✗</span></td>
+              <td class="small">JS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small" style="margin-top:12px;">Notes: "Unknown" means explicit compatibility wasn't provided here. "WASM / JS" refers to common web-ports/emulation approaches (not official Mojang builds).</p>
+    </section>
+  </div>
 </body>
 </html>
