@@ -1,0 +1,4 @@
+User-agent: *
+Sitemap: https://minecraftjava.pages.dev/sitemap.xml
+Disallow: /private/
+Disallow: /admin/
